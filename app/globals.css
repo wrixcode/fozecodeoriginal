@@ -1,0 +1,148 @@
+@import "tailwindcss";
+
+:root {
+  --foreground-rgb: 255, 255, 255;
+--background-start-rgb: 0, 0, 0;
+--background-end-rgb: 0, 0, 0;
+  --cursor-color: 255, 255, 255;
+  --cursor-size: 30px;
+}
+
+/* Custom cursor styles - only apply when not a touch device */
+@media (hover: hover) {
+  * {
+    cursor: none;
+  }
+  
+  .custom-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--cursor-size);
+    height: var(--cursor-size);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    border: 2px solid rgba(var(--cursor-color), 0.9);
+    transform: translate(-50%, -50%);
+    mix-blend-mode: difference;
+    transition: transform 0.2s;
+  }
+  
+  .custom-cursor::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 6px;
+    height: 6px;
+    background-color: rgba(var(--cursor-color), 1);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .custom-cursor.hover {
+    transform: translate(-50%, -50%) scale(1.2);
+    border-color: rgba(var(--cursor-color), 0.7);
+    mix-blend-mode: normal;
+  }
+  
+  /* Allow default cursor on inputs and text areas */
+  input, textarea, [contenteditable] {
+    cursor: text !important;
+  }
+  
+  /* Allow pointer cursor on clickable elements */
+  a, button, [role="button"], [type="button"], [type="submit"], [type="reset"], 
+  .bg-gradient-to-r, .hover\:text-white, [class*="transition-colors"] {
+    cursor: pointer !important;
+  }
+}
+
+/* Touch device detection - ensure default cursor behavior */
+@media (hover: none) {
+  * {
+    cursor: auto !important;
+  }
+  
+  .custom-cursor {
+    display: none !important;
+  }
+  
+  /* Ensure inputs and buttons have proper cursors */
+  input, textarea, [contenteditable] {
+    cursor: text !important;
+  }
+  
+  a, button, [role="button"], [type="button"], [type="submit"], [type="reset"],
+  .bg-gradient-to-r, .hover\:text-white, [class*="transition-colors"] {
+    cursor: pointer !important;
+  }
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+}
+
+.tech-slider {
+  animation: slide 30s linear infinite;
+  width: max-content;
+}
+
+@keyframes slide {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-33.33%);
+  }
+}
+
+.gradient-text {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-green-600;
+}
+@keyframes rotateBorder {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animated-border {
+  position: relative;
+  border-radius: 12px;
+  padding: 2px;
+  background: linear-gradient(45deg, #1bcf1b, #45cf7f, #163cd7, #3575ed);
+  background-size: 300% 300%;
+  animation: rotateBorder 6s ease infinite;
+}
+
+.animated-border-inner {
+  background: #1a1f2b;
+  border-radius: 10px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.animated-border:hover .animated-border-inner {
+  transform: scale(1.05);
+  box-shadow: 0px 4px 20px rgba(54, 43, 255, 0.3);
+}

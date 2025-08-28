@@ -1,0 +1,10 @@
+# Allow all crawlers
+User-agent: *
+Allow: /
+
+# Disallow any temporary files or test pages
+Disallow: /temp/
+Disallow: /test/
+
+# Sitemap location
+Sitemap: https://fozecode.com/sitemap.xml 
