@@ -5,7 +5,6 @@ import Services from "./components/Services";
 
 import Contact from "./components/Contact";
 import Projects from "./components/Projects";
-import Technologies from "./components/Technologies";
 
 
 const Page = () => {

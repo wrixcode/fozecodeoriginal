@@ -10,6 +10,72 @@ interface Message {
   timestamp: Date;
 }
 
+// Define SpeechRecognition interface since it's not in TypeScript's default DOM types
+interface SpeechRecognitionEvent extends Event {
+  results: SpeechRecognitionResultList;
+  resultIndex: number;
+}
+
+interface SpeechRecognitionResult {
+  readonly length: number;
+  item(index: number): SpeechRecognitionAlternative;
+  [index: number]: SpeechRecognitionAlternative;
+}
+
+interface SpeechRecognitionResultList {
+  readonly length: number;
+  item(index: number): SpeechRecognitionResult;
+  [index: number]: SpeechRecognitionResult;
+}
+
+interface SpeechRecognitionAlternative {
+  readonly transcript: string;
+  readonly confidence: number;
+}
+
+interface SpeechRecognition extends EventTarget {
+  continuous: boolean;
+  interimResults: boolean;
+  lang: string;
+  maxAlternatives: number;
+  serviceURI: string;
+  
+  onresult: ((event: SpeechRecognitionEvent) => void) | null;
+  onerror: ((event: Event & { error?: string }) => void) | null;
+  onend: (() => void) | null;
+  onstart: (() => void) | null;
+  onspeechend: (() => void) | null;
+  onspeechstart: (() => void) | null;
+  onsoundstart: (() => void) | null;
+  onsoundend: (() => void) | null;
+  onaudiostart: (() => void) | null;
+  onaudioend: (() => void) | null;
+  onnomatch: ((event: SpeechRecognitionEvent) => void) | null;
+  
+  start(): void;
+  stop(): void;
+  abort(): void;
+}
+
+// Define a constructor interface separately
+interface SpeechRecognitionConstructor {
+  new (): SpeechRecognition;
+}
+
+// Extend the global Window interface appropriately
+declare global {
+  interface Window {
+    SpeechRecognition?: SpeechRecognitionConstructor;
+    webkitSpeechRecognition?: SpeechRecognitionConstructor;
+  }
+}
+
+// Determine SpeechRecognition constructor type or undefined on SSR
+const SpeechRecognitionConstructor: SpeechRecognitionConstructor | undefined =
+  typeof window !== 'undefined'
+    ? (window.SpeechRecognition || window.webkitSpeechRecognition)
+    : undefined;
+
 const predefinedQA: { question: string; answer: string }[] = [
   {
     question: 'what services do you offer',
@@ -38,7 +104,7 @@ const predefinedQA: { question: string; answer: string }[] = [
   {
     question: 'what is your experience',
     answer: 'We have over 2 years of experience delivering quality digital solutions to our clients.',
-  }
+  },
 ];
 
 const Chatbot = () => {
@@ -56,9 +122,8 @@ const Chatbot = () => {
   const [isListening, setIsListening] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const recognitionRef = useRef<any>(null);
+  const recognitionRef = useRef<SpeechRecognition | null>(null);
 
-  // Scroll chat to bottom on new messages or open
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     if (isOpen && inputRef.current) {
@@ -66,41 +131,34 @@ const Chatbot = () => {
     }
   }, [messages, isOpen]);
 
-  // Initialize speech recognition and auto-send answers on speech result
   useEffect(() => {
-    const SpeechRecognition =
-      (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-    if (SpeechRecognition) {
-      recognitionRef.current = new SpeechRecognition();
-      recognitionRef.current.continuous = false;
-      recognitionRef.current.lang = 'en-US';
+    if (!SpeechRecognitionConstructor) return;
 
-      recognitionRef.current.onresult = (event: any) => {
-        const transcript = event.results[0][0].transcript.toLowerCase().trim();
-        setInput(transcript);
-        setIsListening(false);
-        if (inputRef.current) inputRef.current.focus();
+    recognitionRef.current = new SpeechRecognitionConstructor();
+    recognitionRef.current.continuous = false;
+    recognitionRef.current.lang = 'en-US';
 
-        handleAutoAnswer(transcript);
-      };
+    recognitionRef.current.onresult = (event: SpeechRecognitionEvent) => {
+      const transcript = event.results[0][0].transcript.toLowerCase().trim();
+      setInput(transcript);
+      setIsListening(false);
+      if (inputRef.current) inputRef.current.focus();
 
-      recognitionRef.current.onerror = (event: any) => {
-        console.error('Speech recognition error', event.error);
-        setIsListening(false);
-      };
+      handleAutoAnswer(transcript);
+    };
 
-      recognitionRef.current.onend = () => {
-        setIsListening(false);
-      };
-    }
+    recognitionRef.current.onerror = (event: Event & { error?: string }) => {
+      console.error('Speech recognition error', event.error);
+      setIsListening(false);
+    };
+
+    recognitionRef.current.onend = () => {
+      setIsListening(false);
+    };
   }, []);
 
-  // Toggle chat open/close
-  const toggleChat = () => {
-    setIsOpen(!isOpen);
-  };
+  const toggleChat = () => setIsOpen(!isOpen);
 
-  // Start/stop voice recognition
   const toggleListening = () => {
     if (!recognitionRef.current) {
       alert('Speech recognition not supported by this browser.');
@@ -115,52 +173,31 @@ const Chatbot = () => {
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInput(e.target.value);
-  };
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => setInput(e.target.value);
 
   const handleAutoAnswer = async (transcript: string) => {
-    // Check predefined questions first for quick local answers
-    const matchedQA = predefinedQA.find(({ question }) =>
-      transcript.includes(question)
-    );
+    const matchedQA = predefinedQA.find(({ question }) => transcript.includes(question));
 
-    // Add user message
-    setMessages((prev) => [
-      ...prev,
-      { text: transcript, isUser: true, timestamp: new Date() },
-    ]);
+    setMessages((prev) => [...prev, { text: transcript, isUser: true, timestamp: new Date() }]);
     setInput('');
     setIsLoading(true);
 
     if (matchedQA) {
-      // Return quick local answer
       setTimeout(() => {
-        setMessages((prev) => [
-          ...prev,
-          { text: matchedQA.answer, isUser: false, timestamp: new Date() },
-        ]);
+        setMessages((prev) => [...prev, { text: matchedQA.answer, isUser: false, timestamp: new Date() }]);
         setIsLoading(false);
-      }, 800); // simulate thinking delay
+      }, 800);
     } else {
-      // Call external API fallback
       try {
         const response = await fetch('/api/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ message: transcript }),
         });
-
         if (!response.ok) throw new Error('Failed to get response');
-
         const data = await response.json();
-
-        setMessages((prev) => [
-          ...prev,
-          { text: data.response, isUser: false, timestamp: new Date() },
-        ]);
-      } catch (error) {
-        console.error(error);
+        setMessages((prev) => [...prev, { text: data.response, isUser: false, timestamp: new Date() }]);
+      } catch {
         setMessages((prev) => [
           ...prev,
           {
@@ -200,9 +237,8 @@ const Chatbot = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.25 }}
-            className="fixed bottom-20 sm:bottom-20 right-4 sm:right-6 bg-[#141a2b] rounded-lg shadow-2xl border border-cyan-400 flex flex-col w-[90%] max-w-[380px] sm:w-96 h-[500px] max-h-[80vh] z-50"
+            className="fixed bottom-20 right-4 sm:right-6 bg-[#141a2b] rounded-lg shadow-2xl border border-cyan-400 flex flex-col w-[90%] max-w-[380px] sm:w-96 h-[500px] max-h-[80vh] z-50"
           >
-            {/* Chat header */}
             <div className="flex justify-between items-center p-4 border-b border-cyan-600 bg-gradient-to-r from-cyan-600 to-blue-600 rounded-t-lg text-white font-semibold">
               <h3>Fozecode Assistant</h3>
               <button
@@ -214,14 +250,11 @@ const Chatbot = () => {
               </button>
             </div>
 
-            {/* Messages container */}
             <div className="flex-1 p-4 overflow-y-auto custom-scrollbar">
               {messages.map((message, index) => (
                 <div
                   key={index}
-                  className={`mb-4 flex ${
-                    message.isUser ? 'justify-end' : 'justify-start'
-                  }`}
+                  className={`mb-4 flex ${message.isUser ? 'justify-end' : 'justify-start'}`}
                 >
                   <div
                     className={`max-w-[80%] rounded-lg p-3 whitespace-pre-wrap ${
@@ -259,7 +292,6 @@ const Chatbot = () => {
               <div ref={messagesEndRef} />
             </div>
 
-            {/* Input area */}
             <form onSubmit={handleSubmit} className="border-t border-cyan-600 p-2 flex items-center gap-1">
               <button
                 type="button"

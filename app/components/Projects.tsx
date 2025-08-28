@@ -56,7 +56,7 @@ export default function Projects() {
             Recent Website Projects
           </h2>
           <p className="mt-4 text-gray-400 max-w-2xl mx-auto">
-            A showcase of websites we've crafted, each tailored to client needs and styles.
+            A showcase of websites we have crafted, each tailored to client needs and styles.
           </p>
         </motion.div>
 

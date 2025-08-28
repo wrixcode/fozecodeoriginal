@@ -2,7 +2,6 @@
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import VisionImg from 'public/your-image.jpg'; // Replace with your actual image path
 
 export default function About() {
   const stats = [
