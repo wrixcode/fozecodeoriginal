@@ -214,7 +214,7 @@ const Chatbot = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.25 }}
-            className="fixed bottom-20 right-4 sm:right-6 bg-[#141a2b] rounded-lg shadow-2xl border border-cyan-400 flex flex-col w-full max-w-[380px] sm:w-96 h-[500px] max-h-[80vh] z-50"
+            className="fixed bottom-20 right-4 sm:right-6 bg-[#141a2b] rounded-lg shadow-2xl border border-cyan-400 flex flex-col w-full max-w-[300px] sm:w-96 h-[500px] max-h-[80vh] z-50"
           >
             <div className="flex justify-between items-center p-4 border-b border-cyan-600 bg-gradient-to-r from-cyan-600 to-blue-600 rounded-t-lg text-white font-semibold">
               <h3>Fozecode Assistant</h3>
