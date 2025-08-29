@@ -1,7 +1,7 @@
 import { FaFacebookF, FaWhatsapp, FaInstagram, FaLinkedinIn } from "react-icons/fa";
 
 import Link from "next/link";
-
+import Image from "next/image";
 export default function Footer() {
   return (
     <footer className="relative bg-gradient-to-b from-[#0f172a] via-[#0b1220] to-black text-white py-16 px-6 overflow-hidden">
@@ -12,7 +12,8 @@ export default function Footer() {
           <div>
             <div className="text-2xl font-bold flex items-center gap-3">
               {/* <Image src="/logofozer.png" width={32} height={32} alt="Fozecode Logo" /> */}
-              <span className="tracking-wide">Fozecode</span>
+              <Image src="/lgofoze.png" width={180} height={180} alt="Fozecodelogo" />
+              
             </div>
             <p className="mt-4 text-gray-400 leading-relaxed max-w-sm">
               Crafting digital experiences that make an impact with innovation and technology.

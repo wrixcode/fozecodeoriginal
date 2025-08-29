@@ -311,7 +311,7 @@ const Chatbot = () => {
                 value={input}
                 onChange={handleInputChange}
                 placeholder="Ask about our services..."
-                className="flex-1 p-2 border border-cyan-600 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-cyan-400 bg-[#1f2740] text-white"
+                className="flex-1 p-2 border overflow-hidden border-cyan-600 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-cyan-400 bg-[#1f2740] text-white"
                 disabled={isLoading}
                 autoComplete="off"
                 style={{ cursor: 'text' }}
