@@ -69,8 +69,8 @@ export default function About() {
                   className="p-4 rounded-xl bg-[#1a1f2b]/80 backdrop-blur-md border border-white/10 text-center hover:scale-105 transition-transform"
                 >
                   <Icon className="w-8 h-8 mx-auto mb-2 text-cyan-400" />
-                  <div className="text-2xl font-bold text-white">{value}</div>
-                  <div className="text-sm text-gray-400">{label}</div>
+                  <div className="text-2xl font-bold text-center text-white">{value}</div>
+                  <div className="text-sm text-center text-gray-400">{label}</div>
                 </motion.div>
               ))}
             </div>
