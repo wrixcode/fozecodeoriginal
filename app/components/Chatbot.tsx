@@ -4,13 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { MessageCircle, Send, X, Mic, MicOff } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-interface Message {
-  text: string;
-  isUser: boolean;
-  timestamp: Date;
-}
-
-// Define SpeechRecognition interface since it's not in TypeScript's default DOM types
+// Minimal SpeechRecognition types
 interface SpeechRecognitionEvent extends Event {
   results: SpeechRecognitionResultList;
   resultIndex: number;
@@ -39,7 +33,7 @@ interface SpeechRecognition extends EventTarget {
   lang: string;
   maxAlternatives: number;
   serviceURI: string;
-  
+
   onresult: ((event: SpeechRecognitionEvent) => void) | null;
   onerror: ((event: Event & { error?: string }) => void) | null;
   onend: (() => void) | null;
@@ -51,18 +45,16 @@ interface SpeechRecognition extends EventTarget {
   onaudiostart: (() => void) | null;
   onaudioend: (() => void) | null;
   onnomatch: ((event: SpeechRecognitionEvent) => void) | null;
-  
+
   start(): void;
   stop(): void;
   abort(): void;
 }
 
-// Define a constructor interface separately
 interface SpeechRecognitionConstructor {
   new (): SpeechRecognition;
 }
 
-// Extend the global Window interface appropriately
 declare global {
   interface Window {
     SpeechRecognition?: SpeechRecognitionConstructor;
@@ -70,41 +62,26 @@ declare global {
   }
 }
 
-// Determine SpeechRecognition constructor type or undefined on SSR
 const SpeechRecognitionConstructor: SpeechRecognitionConstructor | undefined =
   typeof window !== 'undefined'
     ? (window.SpeechRecognition || window.webkitSpeechRecognition)
     : undefined;
 
+interface Message {
+  text: string;
+  isUser: boolean;
+  timestamp: Date;
+}
+
 const predefinedQA: { question: string; answer: string }[] = [
-  {
-    question: 'what services do you offer',
-    answer: 'We offer web development, creative web design, ecommerce solutions, and performance optimization.',
-  },
-  {
-    question: 'how can i contact fozecode',
-    answer: 'You can contact us via email at fozecode@gmail.com or call us at +91 8129780845.',
-  },
-  {
-    question: 'tell me about your projects',
-    answer: 'We have worked on business websites, social media dashboards, healthcare portals, and more.',
-  },
-  {
-    question: 'do you provide ecommerce solutions',
-    answer: 'Yes, we build seamless and secure ecommerce websites optimized for conversions.',
-  },
-  {
-    question: 'what technologies do you use',
-    answer: 'We use Next.js, React, Tailwind CSS, TypeScript, Node.js, and Express among others.',
-  },
-  {
-    question: 'how do i schedule a consultation',
-    answer: 'You can schedule a free consultation by contacting us through the contact page or email.',
-  },
-  {
-    question: 'what is your experience',
-    answer: 'We have over 2 years of experience delivering quality digital solutions to our clients.',
-  },
+  // ... same questions as before ...
+  { question: 'what services do you offer', answer: 'We offer web development, creative web design, ecommerce solutions, and performance optimization.' },
+  { question: 'how can i contact fozecode', answer: 'You can contact us via email at fozecode@gmail.com or call us at +91 8129780845.' },
+  { question: 'tell me about your projects', answer: 'We have worked on business websites, social media dashboards, healthcare portals, and more.' },
+  { question: 'do you provide ecommerce solutions', answer: 'Yes, we build seamless and secure ecommerce websites optimized for conversions.' },
+  { question: 'what technologies do you use', answer: 'We use Next.js, React, Tailwind CSS, TypeScript, Node.js, and Express among others.' },
+  { question: 'how do i schedule a consultation', answer: 'You can schedule a free consultation by contacting us through the contact page or email.' },
+  { question: 'what is your experience', answer: 'We have over 2 years of experience delivering quality digital solutions to our clients.' },
 ];
 
 const Chatbot = () => {
@@ -237,7 +214,7 @@ const Chatbot = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.25 }}
-            className="fixed bottom-20 right-4 sm:right-6 bg-[#141a2b] rounded-lg shadow-2xl border border-cyan-400 flex flex-col w-[90%] max-w-[380px] sm:w-96 h-[500px] max-h-[80vh] z-50"
+            className="fixed bottom-20 right-4 sm:right-6 bg-[#141a2b] rounded-lg shadow-2xl border border-cyan-400 flex flex-col w-full max-w-[380px] sm:w-96 h-[500px] max-h-[80vh] z-50"
           >
             <div className="flex justify-between items-center p-4 border-b border-cyan-600 bg-gradient-to-r from-cyan-600 to-blue-600 rounded-t-lg text-white font-semibold">
               <h3>Fozecode Assistant</h3>
@@ -292,7 +269,7 @@ const Chatbot = () => {
               <div ref={messagesEndRef} />
             </div>
 
-            <form onSubmit={handleSubmit} className="border-t border-cyan-600 p-2 flex items-center gap-1">
+            <form onSubmit={handleSubmit} className="border-t border-cyan-600 p-2 flex items-center gap-1 w-full">
               <button
                 type="button"
                 onClick={toggleListening}
@@ -311,7 +288,7 @@ const Chatbot = () => {
                 value={input}
                 onChange={handleInputChange}
                 placeholder="Ask about our services..."
-                className="flex-1 p-2 border overflow-hidden border-cyan-600 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-cyan-400 bg-[#1f2740] text-white"
+                className="min-w-0 flex-1 p-2 border border-cyan-600 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-cyan-400 bg-[#1f2740] text-white text-sm"
                 disabled={isLoading}
                 autoComplete="off"
                 style={{ cursor: 'text' }}
