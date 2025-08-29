@@ -7,6 +7,7 @@ import Footer from "./components/Footer";
 import Chatbot from "./components/Chatbot";
 import CustomCursor from "./components/CustomCursor";
 import BackToTop from "./components/BackToTop";
+import WhatsAppChatButton from "./wpbutton/page";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -77,6 +78,7 @@ export default function RootLayout({
           <Chatbot />
           <CustomCursor />
           <BackToTop />
+          <WhatsAppChatButton/>
         </AOSProvider>
       </body>
     </html>

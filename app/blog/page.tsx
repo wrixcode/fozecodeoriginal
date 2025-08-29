@@ -13,51 +13,66 @@ type BlogPost = {
 };
 
 const dummyPosts: BlogPost[] = [
-  {
-    id: 1,
-    title: 'How to Build a Modern Website in 2025',
-    content: `A step-by-step guide to creating a sleek, responsive, and performant website using latest technologies like Next.js and Tailwind CSS. 
-      
-In today's digital landscape, building a modern website means focusing on performance, accessibility, and user experience...`,
-    date: 'August 25, 2025',
-    tags: ['Web Development', 'Next.js', 'Tailwind CSS'],
-  },
-  {
-    id: 2,
-    title: 'Top 5 Performance Optimization Tips',
-    content: `Boost your site speed and SEO with these proven optimization best practices including lazy loading, caching, and code splitting.
+{
+  id: 1,
+  title: 'Why Every Business Needs a Website in 2025',
+  content: `In today’s digital world, most people search online before they decide to buy a product or service. If your business doesn’t have a website, you’re missing out on potential customers.
 
-Improving performance not only enhances user experience but also boosts search engine rankings...`,
-    date: 'July 10, 2025',
-    tags: ['Performance', 'SEO', 'Optimization'],
-  },
-  {
-    id: 3,
-    title: 'Why React and Next.js are a Perfect Match',
-    content: `Exploring the strengths of React and Next.js together for building powerful, SEO-friendly, and fast web applications.
+A website gives your business:
+- 24/7 visibility – customers can find you anytime.
+- More trust – people see your business as professional.
+- Wider reach – you’re not limited to just local customers.
+- More sales – online visitors can quickly turn into paying customers.
 
-React provides component-based architecture, while Next.js adds server-side rendering and static site generation...`,
-    date: 'June 15, 2025',
-    tags: ['React', 'Next.js', 'Frontend'],
-  },
-  {
-    id: 4,
-    title: 'How Tailwind CSS Speeds Up Your UI Workflow',
-    content: `Learn how using utility-first CSS frameworks like Tailwind can dramatically improve your development speed.
+Think of a website as your online shop or office that never closes. It builds trust, attracts customers, and helps your business grow.`,
+  date: 'April 5, 2025',
+  tags: ['Business Growth', 'Website Benefits', 'Digital Marketing'],
+},
+{
+  id: 2,
+  title: 'How a Website Builds Trust With Customers',
+  content: `When people hear about your business, the first thing they do is search online. If they don’t find a website, they might think your business is not real or not professional.
 
-Tailwind’s utility classes allow you to rapidly prototype and build consistent UIs with less custom CSS...`,
-    date: 'May 5, 2025',
-    tags: ['CSS', 'Tailwind', 'UI Design'],
-  },
-  {
-    id: 5,
-    title: 'Introduction to TypeScript for JavaScript Developers',
-    content: `Understand the benefits of adding static typing to your JavaScript projects with an easy introduction to TypeScript.
+A good website shows:
+- Who you are and what you do.
+- Real customer reviews and testimonials.
+- Contact details so customers can easily reach you.
+- A professional design that reflects your brand.
 
-TypeScript helps catch mistakes early and improves developer experience with intelligent code completion...`,
-    date: 'April 20, 2025',
-    tags: ['TypeScript', 'JavaScript', 'Programming'],
-  },
+Having a website is like having a digital business card — it proves your business is genuine and makes customers feel confident in choosing you.`,
+  date: 'April 10, 2025',
+  tags: ['Customer Trust', 'Business Website', 'Branding'],
+},
+{
+  id: 3,
+  title: 'How a Website Can Help You Get More Customers',
+  content: `Imagine if your shop was open only a few hours a day. You would lose sales, right? A website works differently — it’s always open, day and night.
+
+With a website, people can:
+- Discover your business through Google searches.
+- Learn about your products and services anytime.
+- Contact you directly from the site.
+- Share your website with others, spreading word-of-mouth online.
+
+The more people can find you online, the more chances you have to turn visitors into real customers.`,
+  date: 'April 15, 2025',
+  tags: ['Leads', 'Sales', 'Business Growth'],
+},
+{
+  id: 4,
+  title: 'Why Mobile-Friendly Websites Matter',
+  content: `Most people use their phones to search online. If your website doesn’t work well on mobile, customers may leave and choose a competitor.
+
+A mobile-friendly website means:
+- Easy to read on any device.
+- Faster loading speed.
+- A smoother customer experience.
+
+Simply put, a website that looks great on both computers and phones keeps customers happy and more likely to do business with you.`,
+  date: 'April 18, 2025',
+  tags: ['Mobile Friendly', 'Customer Experience', 'Business Growth'],
+}
+
 ];
 
 export default function Blog() {
