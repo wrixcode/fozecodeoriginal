@@ -60,18 +60,19 @@ export default function About() {
             {/* Stats */}
             <div className="grid grid-cols-3 gap-6">
               {stats.map(({ icon: Icon, label, value }, i) => (
-                <motion.div
-                  key={label}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: i * 0.2 }}
-                  viewport={{ once: true }}
-                  className="p-4 rounded-xl bg-[#1a1f2b]/80 backdrop-blur-md border border-white/10 text-center hover:scale-105 transition-transform"
-                >
-                  <Icon className="w-8 h-8 mx-auto mb-2 text-cyan-400" />
-                  <div className="text-2xl font-bold text-center text-white">{value}</div>
-                  <div className="text-sm text-center text-gray-400">{label}</div>
-                </motion.div>
+              <motion.div
+  key={label}
+  initial={{ opacity: 0, y: 20 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.6, delay: i * 0.2 }}
+  viewport={{ once: true }}
+  className="flex flex-col items-center justify-center p-6 rounded-xl bg-[#1a1f2b]/80 backdrop-blur-md border border-white/10 hover:scale-105 transition-transform text-white"
+>
+  <Icon className="w-8 h-8 mb-3 text-cyan-400" />
+  <div className="text-2xl font-bold">{value}</div>
+  <div className="text-sm text-gray-400">{label}</div>
+</motion.div>
+
               ))}
             </div>
           </motion.div>
