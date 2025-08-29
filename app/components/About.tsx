@@ -49,7 +49,7 @@ export default function About() {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: i * 0.15 }}
                   viewport={{ once: true }}
-                  className="p-4 rounded-lg bg-[#1a1f2b]/70 backdrop-blur-md border border-white/10 hover:border-cyan-400/40 hover:shadow-lg hover:shadow-cyan-400/20 transition"
+                  className="p-8 rounded-lg bg-[#1a1f2b]/70 backdrop-blur-md border border-white/10 hover:border-cyan-400/40 hover:shadow-lg hover:shadow-cyan-400/20 transition"
                 >
                   <h2 className="text-lg font-semibold text-cyan-400 mb-1">{step.title}</h2>
                   <p className="text-gray-300 text-sm leading-relaxed">{step.text}</p>
