@@ -8,7 +8,7 @@ export default function Hero() {
   const solutions = [
     'Custom Website Design & Development',
     'Website Maintenance & Support',
-    'SEO & Performance Optimization',
+  
     'UI/UX Design',
   ];
 
